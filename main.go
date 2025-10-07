@@ -11,6 +11,7 @@ import (
 	"os"
 	"os/signal"
 	"regexp"
+	"strconv"
 	"strings"
 	"syscall"
 	"time"
@@ -166,6 +167,13 @@ func extractToolUse(s string) [][2]string {
 
 func main() {
 	port := 9123
+	if len(os.Args) > 1 {
+		var err error
+		port, err = strconv.Atoi(os.Args[1])
+		if err != nil {
+			port = 9124
+		}
+	}
 	logPath := "/tmp/ccproxy.log"
 	if err := log.SetLogPath(logPath); err != nil {
 		log.ErrorLog("fail to set log file path: %v", err)
